@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${crs.name}"></title>
+</head>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div class="container mt-5 mb-5">
+    <div class="text-center"><h1 th:text="${crs.name}"></h1></div>
+    <div class="text-center mt-4 mb-4" th:each="md : ${crs.getModules()}">
+        <h1 th:text="${md.name}"></h1>
+        <div class="text-center mt-4 mb-4" th:each="ls : ${md.getLessons()}">
+            <h3 th:text="${ls.name}"></h3>
+            <h5><p class="text-justify mt-4" th:text="${ls.lesson_header}"></p></h5>
+            <p class="text-justify mt-4" th:text="${ls.lesson_text}"></p>
+            <div class="text-center mt-4 mb-5" th:if="${ls.lesson_video!=null}">
+                <div class="embed-responsive embed-responsive-16by9 mb-3">
+                    <iframe class="embed-responsive-item"
+                            th:src="${ls.getLesson_video()}"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

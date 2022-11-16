@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Courses</title>
+</head>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div class="container mt-5">
+    <div class="pb-4">
+        <h3>Добавление курса</h3>
+    </div>
+    <div class="gy-5">
+        <form th:action="@{/course}" th:object="${course}" method="POST">
+            <div class="form-row">
+                <div class="col-auto my-2">
+                    <label class="sr-only" for="InputCourseName">Название курса</label>
+                    <input class="form-control"
+                           type="text"
+                           id="InputCourseName"
+                           placeholder="Название курса"
+                           th:errorclass="is-invalid"
+                           th:field="*{name}"/>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}">
+                    </div>
+                </div>
+                <div class="col-auto my-2 md-5">
+                    <label class="sr-only" for="InputCourseTag">Тег курса (уникальный)</label>
+                    <input class="form-control"
+                           type="text"
+                           id="InputCourseTag"
+                           placeholder="Тег (уникальный)"
+                           th:errorclass="is-invalid"
+                           th:field="*{tag}"/>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('tag')}"
+                         th:errors="*{tag}">
+                    </div>
+                </div>
+                <div class="col-auto my-2">
+                    <button class="btn btn-primary" type="submit">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="pt-4">
+        <h3>Курсы</h3>
+    </div>
+    <br>
+
+    <table class="table ">
+        <thead>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Tag</th>
+        <th scope="col"></th>
+        </thead>
+        <tbody>
+        <tr th:each="cr, i: ${courses} ">
+            <th scope="row" th:text="${i.count}"></th>
+            <td>
+                <a th:utext="${(cr.getName())}"
+                   th:href="@{/course/{id}(id=${cr.getId()})}">
+                </a>
+            </td>
+            <td
+                    th:utext="${cr.getTag()}">
+            </td>
+            <td>
+                <form th:action="@{/deleteCourse}" method="post">
+                    <input type="hidden" name="id" th:value="${cr.getId()}"/>
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+</html>

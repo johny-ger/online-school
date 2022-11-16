@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Lessons</title>
+</head>
+<body>
+
+<div th:insert="navbar :: navbar"></div>
+<div class="container mt-5">
+    <div class="pb-4">
+        <h1>Редактирование модуля</h1>
+    </div>
+    <div class="gy-5">
+        <form th:action="@{/saveModule}" method="POST">
+            <div class="form-row align-items-center">
+                <div class="col-auto my-1">
+                    <label class="sr-only">Название модуля</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Название</div>
+                        </div>
+                        <input class="form-control"
+                               type="text"
+                               id="InputModuleName"
+                               th:value="${module.getName()}"
+                               th:name="name"/>
+                    </div>
+                </div>
+                <input type="hidden" name="id" th:value="${module.getId()}">
+                <div class="col-auto my-1">
+                    <button class="btn btn-primary" type="submit">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="pt-4">
+        <h3>Добавление урока</h3>
+    </div>
+    <div class="gy-5 pb-4 pt-2">
+        <form th:action="@{/course/{c_id}/{m_id}(c_id=${course.getId()}, m_id=${module.getId()})}" th:object="${lesson}"
+              method="POST">
+            <div class="form-row align-items-center">
+                <div class="col-sm-3 my-1">
+                    <label class="sr-only">Название урока</label>
+                    <input type="text" class="form-control" th:field="*{name}" th:errorclass="is-invalid" placeholder="Название урока"/>
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}">
+                    </div>
+                </div>
+                <div class="col-auto my-1">
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h1>Уроки</h1>
+    <table class="table">
+        <thead>
+        <th scope="col">#</th>
+        <th scope="col">Название урока</th>
+        <th scope="col"></th>
+        </thead>
+        <tr th:each="ls, i : ${lessons}">
+            <th scope="row" th:text="${i.count}"></th>
+            <td><a th:utext="${ls.getName()}" th:href="@{/course/{c_id}/{m_id}/{l_id}(c_id=${course.getId()},
+                                                       m_id=${module.getId()},
+                                                       l_id=${ls.getId()})}">Подробнее</a>
+            </td>
+            <td>
+                <form th:action="@{/deleteLesson}" method="post">
+                    <input type="hidden" name="id" th:value="${ls.getId()}"/>
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+</html>

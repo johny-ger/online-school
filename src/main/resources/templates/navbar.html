@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>NavigationBar</title>
+</head>
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/main">Online School</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/user/profile">Личный кабинет</a>
+            </li>
+            <li class="nav-item active">
+                <div sec:authorize="hasRole(T(com.example.school.model.Role).ROLE_TEACHER)">
+                    <a class="nav-link" href="/course">Редактор курсов</a>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <div sec:authorize="hasRole(T(com.example.school.model.Role).ROLE_ADMIN)">
+                    <a class="nav-link" href="/admin">Страница администратора</a>
+                </div>
+            </li>
+        </ul>
+        <div class="navbar-text mr-3" th:text="${#request.getUserPrincipal().getName()}"></div>
+        <form class="form-inline" th:action="@{/logout}" method="post">
+            <input class="btn btn-sm align-middle btn-secondary" type="submit" value="Выйти"/>
+        </form>
+    </div>
+</nav>
+</body>
+</html>
